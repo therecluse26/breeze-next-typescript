@@ -1,18 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
-const Dropdown = ({
+interface DropdownProps {
+    align?: 'left' | 'top' | 'right'
+    width?: number | string
+    contentClasses?: string
+    trigger: React.ReactNode
+    children: React.ReactNode
+}
+
+const Dropdown: React.FC<DropdownProps> = ({
     align = 'right',
     width = 48,
     contentClasses = 'py-1 bg-white',
     trigger,
     children,
 }) => {
-    let alignmentClasses
+    let alignmentClasses = ''
 
     switch (width) {
         case '48':
             width = 'w-48'
+            break
+        default:
+            width = `w-${width}`
             break
     }
 
@@ -28,8 +39,6 @@ const Dropdown = ({
             alignmentClasses = 'origin-top-right right-0'
             break
     }
-
-    const [open, setOpen] = useState(false)
 
     return (
         <Menu as="div" className="relative">

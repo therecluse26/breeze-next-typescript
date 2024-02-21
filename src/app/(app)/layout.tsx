@@ -3,8 +3,13 @@
 import { useAuth } from '@/hooks/auth'
 import Navigation from '@/app/(app)/Navigation'
 import Loading from '@/app/(app)/Loading'
+import { ReactNode } from 'react'
 
-const AppLayout = ({ children, header }) => {
+type AppLayoutProps = {
+    children: ReactNode
+}
+
+const AppLayout = ({ children }: AppLayoutProps) => {
     const { user } = useAuth({ middleware: 'auth' })
 
     if (!user) {

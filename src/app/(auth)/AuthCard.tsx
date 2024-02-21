@@ -1,4 +1,9 @@
-const AuthCard = ({ logo, children }) => (
+type AuthCardProps = {
+    logo: React.ReactNode | string
+    children: React.ReactNode
+}
+
+const AuthCard = ({ logo, children }: AuthCardProps) => (
     <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div>{logo}</div>
 

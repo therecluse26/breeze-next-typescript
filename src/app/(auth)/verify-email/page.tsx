@@ -1,7 +1,7 @@
 'use client'
 
 import Button from '@/components/Button'
-import { useAuth } from '@/hooks/auth'
+import { AuthStatus, useAuth } from '@/hooks/auth'
 import { useState } from 'react'
 
 const Page = () => {
@@ -10,7 +10,7 @@ const Page = () => {
         redirectIfAuthenticated: '/dashboard',
     })
 
-    const [status, setStatus] = useState(null)
+    const [status, setStatus] = useState<AuthStatus>(null)
 
     return (
         <>

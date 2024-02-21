@@ -4,10 +4,16 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import Label from '@/components/Label'
-import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
+import { AuthStatus, useAuth } from '@/hooks/auth'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+
+type Errors = {
+    email?: string[]
+    password?: string[]
+    password_confirmation?: string[]
+}
 
 const PasswordReset = () => {
     const searchParams = useSearchParams()
@@ -17,27 +23,30 @@ const PasswordReset = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [errors, setErrors] = useState([])
-    const [status, setStatus] = useState(null)
+    const [errors, setErrors] = useState<Errors>({})
+    const [status, setStatus] = useState<AuthStatus>(null)
 
-    const submitForm = event => {
+    const submitForm = (event: { preventDefault: () => void }) => {
         event.preventDefault()
 
         resetPassword({
+            setErrors,
+            setStatus,
             email,
             password,
             password_confirmation: passwordConfirmation,
-            setErrors,
-            setStatus,
         })
     }
 
     useEffect(() => {
-        setEmail(searchParams.get('email'))
-    }, [searchParams.get('email')])
+        const emailParam = searchParams.get('email')
+        if (emailParam) {
+            setEmail(emailParam)
+        }
+    }, [searchParams])
 
     return (
-        <>
+        <Suspense>
             {/* Session Status */}
             <AuthSessionStatus className="mb-4" status={status} />
 
@@ -71,10 +80,7 @@ const PasswordReset = () => {
                         required
                     />
 
-                    <InputError
-                        messages={errors.password}
-                        className="mt-2"
-                    />
+                    <InputError messages={errors.password} className="mt-2" />
                 </div>
 
                 {/* Confirm Password */}
@@ -104,7 +110,7 @@ const PasswordReset = () => {
                     <Button>Reset Password</Button>
                 </div>
             </form>
-        </>
+        </Suspense>
     )
 }
 

@@ -4,9 +4,13 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import Label from '@/components/Label'
-import { useAuth } from '@/hooks/auth'
+import { AuthStatus, useAuth } from '@/hooks/auth'
 import { useState } from 'react'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+
+type Errors = {
+    email?: string[]
+}
 
 const Page = () => {
     const { forgotPassword } = useAuth({
@@ -15,10 +19,10 @@ const Page = () => {
     })
 
     const [email, setEmail] = useState('')
-    const [errors, setErrors] = useState([])
-    const [status, setStatus] = useState(null)
+    const [errors, setErrors] = useState<Errors>({})
+    const [status, setStatus] = useState<AuthStatus>(null)
 
-    const submitForm = event => {
+    const submitForm = (event: { preventDefault: () => void }) => {
         event.preventDefault()
 
         forgotPassword({ email, setErrors, setStatus })

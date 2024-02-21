@@ -1,0 +1,20 @@
+/.next
+/.github
+/.git
+/public
+/coverage
+
+/.DS_Store
+/.vscode
+/.idea
+**/*.log
+**/*.json
+
+# Ignore node_modules except for workspace root
+/node_modules
+!/*
+
+# Ignore compiled output
+/out
+
+**/*.md
